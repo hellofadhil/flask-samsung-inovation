@@ -29,6 +29,22 @@ def get_all_sensors():
     sensors = [format_sensor(sensor) for sensor in iot_collection.find()]
     return sensors, 200
 
+def get_average_sensor():
+    """Calculate the average temperature and humidity."""
+    sensors = list(iot_collection.find())
+
+    if not sensors:
+        return {"error": "No sensor data available"}, 404
+
+    total_temperature = sum(sensor["temperature"] for sensor in sensors)
+    total_humidity = sum(sensor["humidity"] for sensor in sensors)
+    count = len(sensors)
+
+    return {
+        "average_temperature": total_temperature / count,
+        "average_humidity": total_humidity / count
+    }, 200
+
 def get_sensor_by_id(sensor_id):
     """Retrieve a sensor by its ID."""
     try:

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from services.sensor_service import (
     add_sensor, get_all_sensors, get_sensor_by_id,
-    update_sensor, delete_sensor
+    update_sensor, delete_sensor, get_average_sensor
 )
 
 sensor_bp = Blueprint("sensor", __name__, url_prefix="/sensors")
@@ -34,4 +34,10 @@ def modify_sensor(sensor_id):
 def remove_sensor(sensor_id):
     """API endpoint to delete a sensor."""
     response, status_code = delete_sensor(sensor_id)
+    return jsonify(response), status_code
+
+@sensor_bp.route("/average", methods=["GET"])
+def retrieve_sensors_average():
+    """API endpoint to delete a sensor."""
+    response, status_code = get_average_sensor()
     return jsonify(response), status_code
